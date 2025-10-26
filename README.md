@@ -67,13 +67,12 @@ Activate virtual environment
 On Windows:
 venv\Scripts\activate
 
-On macOS/Linux:
+On macOS/Linux(GitHub CodeSpace too):
 source venv/bin/activate
 
 Install dependencies
 pip install -r requirements.txt
 
-text
 
 **Option 2: Quick Install with Make** (Linux/macOS)
 
@@ -81,13 +80,11 @@ git clone https://github.com/yourusername/dna-sequence-analyzer.git
 cd dna-sequence-analyzer
 make install
 
-text
 
 ### Run the Application
 
 streamlit run app.py
 
-text
 
 The application will automatically open in your browser at `http://localhost:8501`
 
@@ -122,14 +119,12 @@ Click "Run Analysis"
 
 Export results as CSV
 
-text
 
 ### Input Format Requirements
 
 **Valid DNA Sequence:**
 ATGCGATCGATCGATCG
 
-text
 
 **FASTA Format:**
 sequence_id Description text
@@ -138,7 +133,7 @@ CGATCGATCGATCGATCGATC
 sequence_id_2 Another sequence
 GCTAGCTAGCTAGCTAGCTAG
 
-text
+
 
 **Supported Characters:**
 - Standard bases: `A`, `T`, `G`, `C`
@@ -185,7 +180,6 @@ dna-sequence-analyzer/
 ├── gc_content.png
 └── orf_detection.png
 
-text
 
 ## 🧪 Testing
 
@@ -203,20 +197,8 @@ pytest tests/test_sequence_analysis.py -v
 Run specific test class
 pytest tests/test_sequence_analysis.py::TestGCContent -v
 
-text
 
-### Test Coverage
 
-Current test coverage: **92%**
-
-Module Statements Missing Coverage
-src/sequence_analysis.py 245 15 94%
-src/sequence_io.py 158 10 94%
-src/utils.py 187 18 90%
-src/visualization.py 142 15 89%
-TOTAL 732 58 92%
-
-text
 
 ## 📊 Performance Benchmarks
 
@@ -240,7 +222,6 @@ cd dna-sequence-analyzer
 pip install -e .
 pip install -r requirements-dev.txt
 
-text
 
 ### Code Style
 
@@ -259,7 +240,7 @@ flake8 src/ tests/
 Type checking
 mypy src/
 
-text
+
 
 ### Contributing
 
@@ -292,14 +273,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 If you use this tool in your research, please cite:
 
 @software{dna_sequence_analyzer_2025,
-author = {Your Name},
+author = {Gabriele Iacopo Langellotto},
 title = {DNA Sequence Analyzer: A Web-Based Bioinformatics Tool},
 year = {2025},
-url = {https://github.com/yourusername/dna-sequence-analyzer},
+url = {https://github.com/GrowthInnovationLegacy/dna-sequence-analyzer},
 version = {1.0.0}
 }
 
-text
+
 
 ## 📄 License
 
@@ -307,7 +288,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 MIT License
 
-Copyright (c) 2025 Your Name
+Copyright (c) 2025 Gabriele Iacopo Langellotto
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -315,13 +296,13 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software...
 
-text
+
 
 ## 👥 Authors
 
-- **Your Name** - *Initial work* - [@yourusername](https://github.com/yourusername)
+- **Gabreiele Iacopo Langellotto** - *Initial work* - [@GIL794](https://github.com/GrowthInnovationLegacy)
 
-See also the list of [contributors](https://github.com/yourusername/dna-sequence-analyzer/contributors).
+See also the list of [contributors](https://github.com/GrowthInnovationLegacy/dna-sequence-analyzer/contributors).
 
 ## 🙏 Acknowledgments
 
@@ -333,9 +314,9 @@ See also the list of [contributors](https://github.com/yourusername/dna-sequence
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/dna-sequence-analyzer/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/dna-sequence-analyzer/discussions)
-- **Email**: your.email@example.com
+- **Issues**: [GitHub Issues](https://github.com/GrowthInnovationLegacy/dna-sequence-analyzer/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/GrowthInnovationLegacy/dna-sequence-analyzer/discussions)
+- **Email**: 
 
 ## 🗺️ Roadmap
 
@@ -353,7 +334,7 @@ See also the list of [contributors](https://github.com/yourusername/dna-sequence
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/dna-sequence-analyzer&type=Date)](https://star-history.com/#yourusername/dna-sequence-analyzer&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=GrowthInnovationLegacy/dna-sequence-analyzer&type=Date)](https://star-history.com/#GrowthInnovationLegacy/dna-sequence-analyzer&Date)
 
 ---
 
