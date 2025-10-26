@@ -21,7 +21,7 @@ from .sequence_analysis import (
     calculate_sliding_window_gc,
     get_complement,
     get_reverse_complement,
-    find_orfs,
+    find_orfs_comprehensive,
     transcribe_dna_to_rna,
     translate_sequence,
     find_motif

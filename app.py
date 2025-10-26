@@ -16,7 +16,7 @@ from src.sequence_analysis import (
     calculate_sliding_window_gc,
     get_complement,
     get_reverse_complement,
-    find_orfs,
+    find_orfs_comprehensive,
     transcribe_dna_to_rna,
     translate_sequence,
     find_motif
@@ -32,11 +32,7 @@ from src.visualization import (
     plot_orf_locations,
     create_sequence_summary_dashboard
 )
-from src.utils import (
-    get_sequence_statistics,
-    calculate_molecular_weight,
-    RESTRICTION_SITES
-)
+from src.utils import *
 
 # Page configuration
 st.set_page_config(
@@ -52,12 +48,11 @@ st.markdown("""
     .main-header {
         font-size: 3rem;
         font-weight: bold;
-        color: #2C3E50;
+        color: #FFBF00;
         text-align: center;
         padding: 1rem;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 20%);
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
     }
     .metric-card {
         background-color: #f0f2f6;
@@ -66,7 +61,7 @@ st.markdown("""
         border-left: 4px solid #667eea;
     }
     .info-box {
-        background-color: #e8f4f8;
+        background-color: #FF5F1F;
         padding: 1rem;
         border-radius: 0.5rem;
         border-left: 4px solid #3498db;
