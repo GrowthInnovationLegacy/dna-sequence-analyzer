@@ -229,3 +229,41 @@ def calculate_melting_temperature(sequence: str, method: str = "wallace") -> flo
         return round(64.9 + 41 * (gc - 16.4) / length, 2)
     else:
         raise ValueError("Unknown method. Use 'wallace' or 'gc_content'.")
+
+
+
+
+# ------------------------------------------------------------------------------
+# Common restriction enzyme recognition sites (5'→3')
+# These are core Type II enzymes frequently used in cloning workflows.
+# Reference sequences: NEB & Biopython Restriction Database
+# ------------------------------------------------------------------------------
+
+RESTRICTION_SITES: Dict[str, str] = {
+    "EcoRI": "GAATTC",
+    "BamHI": "GGATCC",
+    "HindIII": "AAGCTT",
+    "PstI": "CTGCAG",
+    "SmaI": "CCCGGG",
+    "KpnI": "GGTACC",
+    "SacI": "GAGCTC",
+    "XbaI": "TCTAGA",
+    "NotI": "GCGGCCGC",
+    "XhoI": "CTCGAG",
+    "ApaI": "GGGCCC",
+    "Acc65I": "GGTACC",
+    "NheI": "GCTAGC",
+    "SpeI": "ACTAGT",
+    "BglII": "AGATCT",
+    "ClaI": "ATCGAT",
+    "SalI": "GTCGAC",
+    "SphI": "GCATGC",
+    "NcoI": "CCATGG",
+    "StuI": "AGGCCT",
+    "AgeI": "ACCGGT",
+    # Custom or educational additions:
+    "NdeI": "CATATG",    # Contains start codon ATG
+    "NsiI": "ATGCAT",    # Complementary to start codon region
+    "ApaLI": "GTGCAC",   # 6 bp palindrome
+    "BsrGI": "TGTACA"    # Golden Gate Assembly compatible
+}

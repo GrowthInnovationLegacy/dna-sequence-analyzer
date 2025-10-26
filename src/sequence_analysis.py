@@ -508,35 +508,99 @@ def find_orfs_comprehensive(sequence: str,
                            allow_alternative_starts: bool = False,
                            find_partial: bool = False) -> dict:
     """
-    Advanced ORF detection with:
-    - Alternative start codons (GTG, TTG) for bacterial genomes
-    - Partial ORFs (missing start or stop at sequence ends)
-    - Nested ORF handling
-    - Comprehensive statistics
+    Enhanced ORF detection with improved edge-case handling.
+
+    This version fixes the UnboundLocalError by ensuring `stats`
+    is always defined, even if no ORFs are found.
     """
+    sequence = sequence.upper()
+    if not sequence:
+        return {"complete_orfs": [], "partial_orfs": [], "statistics": {}}
+
+    # Initialize variables early (so they always exist)
     complete_orfs = []
     partial_orfs = []
-    
-    # Alternative starts important for bacteria
-    if allow_alternative_starts:
-        start_codons = {'ATG', 'GTG', 'TTG'}  # GTG common in E. coli
-    
-    # Find partial ORFs at sequence boundaries
-    if find_partial:
-        # Detects genes truncated by sequencing/assembly
-        # Critical for analyzing contigs
-        
-    # Statistics generation
-     stats = {
-        'total_complete': len(complete_orfs),
-        'total_partial': len(partial_orfs),
-        'longest_orf': max(complete_orfs, key=lambda x: x['length']),
-        'frames_with_orfs': len(set(orf['frame'] for orf in complete_orfs)),
-        'average_orf_length': sum(o['length'] for o in complete_orfs) / len(complete_orfs)
+    stats = {
+        "total_complete": 0,
+        "total_partial": 0,
+        "longest_orf": None,
+        "frames_with_orfs": 0,
+        "average_orf_length": 0
     }
-    
+
+    # Define start/stop codons
+    start_codons = {"ATG"}
+    if allow_alternative_starts:
+        start_codons.update({"GTG", "TTG"})
+    stop_codons = {"TAA", "TAG", "TGA"}
+
+    # Check both strands (+ and −)
+    from src.sequence_analysis import get_reverse_complement
+    strands = [('+', sequence), ('-', get_reverse_complement(sequence))]
+
+    for strand, seq in strands:
+        for frame in range(3):
+            frame_name = f"{strand}{frame + 1}"
+            i = frame
+            while i < len(seq) - 2:
+                codon = seq[i:i + 3]
+                if codon in start_codons:
+                    for j in range(i + 3, len(seq) - 2, 3):
+                        stop = seq[j:j + 3]
+                        if stop in stop_codons:
+                            length = j + 3 - i
+                            if length >= min_length:
+                                orf_seq = seq[i:j + 3]
+                                from src.sequence_analysis import translate_sequence
+                                protein_seq = translate_sequence(orf_seq[:-3])
+
+                                if strand == '-':
+                                    start_pos = len(sequence) - (j + 3)
+                                    end_pos = len(sequence) - i
+                                else:
+                                    start_pos = i
+                                    end_pos = j + 3
+
+                                complete_orfs.append({
+                                    "frame": frame_name,
+                                    "start": start_pos,
+                                    "end": end_pos,
+                                    "length": length,
+                                    "sequence": orf_seq,
+                                    "protein": protein_seq,
+                                    "strand": strand
+                                })
+                            break
+                i += 3
+
+    # Collect partial ORFs if requested
+    if find_partial:
+        for strand, seq in strands:
+            for frame in range(3):
+                open_start = seq.find("ATG", frame)
+                open_end = len(seq)
+                if open_start != -1:
+                    length = open_end - open_start
+                    if length >= min_length:
+                        partial_orfs.append({
+                            "frame": f"{strand}{frame + 1}",
+                            "start": open_start,
+                            "end": open_end
+                        })
+
+    # Generate statistics safely
+    if complete_orfs:
+        lengths = [o["length"] for o in complete_orfs]
+        stats = {
+            "total_complete": len(complete_orfs),
+            "total_partial": len(partial_orfs),
+            "longest_orf": max(lengths),
+            "frames_with_orfs": len(set(o["frame"] for o in complete_orfs)),
+            "average_orf_length": round(sum(lengths) / len(lengths), 2)
+        }
+
     return {
-        'complete_orfs': complete_orfs,
-        'partial_orfs': partial_orfs,
-        'statistics': stats
+        "complete_orfs": complete_orfs,
+        "partial_orfs": partial_orfs,
+        "statistics": stats
     }

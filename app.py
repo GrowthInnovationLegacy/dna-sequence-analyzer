@@ -32,7 +32,11 @@ from src.visualization import (
     plot_orf_locations,
     create_sequence_summary_dashboard
 )
-from src.utils import *
+from src.utils import (
+    get_sequence_statistics,
+    calculate_molecular_weight,
+    RESTRICTION_SITES
+)
 
 # Page configuration
 st.set_page_config(
@@ -48,10 +52,10 @@ st.markdown("""
     .main-header {
         font-size: 3rem;
         font-weight: bold;
-        color: #FFBF00;
+        color: #DAA520;
         text-align: center;
         padding: 1rem;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 20%);
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
     }
     .metric-card {
@@ -61,7 +65,7 @@ st.markdown("""
         border-left: 4px solid #667eea;
     }
     .info-box {
-        background-color: #FF5F1F;
+        background-color: #FF5F15;
         padding: 1rem;
         border-radius: 0.5rem;
         border-left: 4px solid #3498db;
@@ -134,7 +138,7 @@ def main():
         st.sidebar.markdown("**Manual Sequence Entry**")
         seq_input = st.sidebar.text_area(
             "Enter DNA sequence:",
-            height=150,
+            height=100,
             placeholder="ATGCGATCGATCG...",
             help="Paste your DNA sequence here. Only A, T, G, C characters are valid."
         )
@@ -230,15 +234,11 @@ def main():
             default=["📊 Summary Statistics", "🧮 GC Content Analysis"]
         )
         
-        # Advanced options
+        # Advanced options in collapsible section
         with st.sidebar.expander("⚙️ Advanced Options"):
             show_sequence = st.checkbox("Display full sequence", value=False)
             gc_window_size = st.slider("GC window size (bp):", 10, 200, 20, 10)
             min_orf_length = st.slider("Minimum ORF length (bp):", 30, 300, 75, 15)
-        
-        # Export options
-        st.sidebar.markdown("---")
-        st.sidebar.header("💾 Export Options")
         
         # Main analysis section
         for seq_record in sequences:
@@ -267,7 +267,7 @@ def main():
                     with st.expander("🔤 View Full Sequence"):
                         st.code(seq_record.sequence, language=None)
                 
-                # Perform selected analyses
+                # Initialize results dictionary
                 results = {}
                 
                 # Summary Statistics
@@ -366,40 +366,53 @@ def main():
                     st.subheader("🔍 Open Reading Frames")
                     
                     with st.spinner("Detecting ORFs..."):
-                        orfs = find_orfs(seq_record.sequence, min_length=min_orf_length)
+                        orfs_result = find_orfs_comprehensive(seq_record.sequence, min_length=min_orf_length)
                     
-                    if orfs:
-                        st.success(f"✅ Found {len(orfs)} ORF(s) ≥ {min_orf_length} bp")
+                    # Extract ORF data
+                    complete_orfs = orfs_result.get("complete_orfs", [])
+                    partial_orfs = orfs_result.get("partial_orfs", [])
+                    orf_stats = orfs_result.get("statistics", {})
+                    
+                    if complete_orfs:
+                        st.success(f"✅ Found {len(complete_orfs)} complete ORF(s)")
                         
-                        # Create DataFrame
-                        orf_df = pd.DataFrame(orfs)
-                        display_df = orf_df[['frame', 'start', 'end', 'length']].copy()
-                        display_df['protein_preview'] = orf_df['protein'].apply(
+                        # Create DataFrame for display
+                        orf_df = pd.DataFrame(complete_orfs)
+                        display_orf_df = orf_df[['frame', 'start', 'end', 'length']].copy()
+                        display_orf_df['protein_preview'] = orf_df['protein'].apply(
                             lambda x: x[:30] + '...' if len(x) > 30 else x
                         )
                         
-                        st.dataframe(display_df, use_container_width=True, hide_index=True)
+                        st.dataframe(display_orf_df, use_container_width=True, hide_index=True)
                         
                         # Show detailed view
                         with st.expander("🔬 Detailed ORF Information"):
-                            selected_orf = st.selectbox(
-                                "Select ORF:",
-                                range(len(orfs)),
-                                format_func=lambda i: f"Frame {orfs[i]['frame']} at {orfs[i]['start']}-{orfs[i]['end']}"
-                            )
-                            
-                            orf_detail = orfs[selected_orf]
-                            st.markdown(f"**Frame:** {orf_detail['frame']}")
-                            st.markdown(f"**Position:** {orf_detail['start']} - {orf_detail['end']} bp")
-                            st.markdown(f"**Length:** {orf_detail['length']} bp ({orf_detail['length']//3} codons)")
-                            st.markdown("**Nucleotide Sequence:**")
-                            st.code(orf_detail['sequence'], language=None)
-                            st.markdown("**Protein Sequence:**")
-                            st.code(orf_detail['protein'], language=None)
+                            if complete_orfs:  # Extra safety check
+                                selected_orf = st.selectbox(
+                                    "Select ORF:",
+                                    range(len(complete_orfs)),
+                                    format_func=lambda i: f"Frame {complete_orfs[i]['frame']} at {complete_orfs[i]['start']}-{complete_orfs[i]['end']}"
+                                )
+                                
+                                orf_detail = complete_orfs[selected_orf]
+                                st.markdown(f"**Frame:** {orf_detail['frame']}")
+                                st.markdown(f"**Position:** {orf_detail['start']} - {orf_detail['end']} bp")
+                                st.markdown(f"**Length:** {orf_detail['length']} bp ({orf_detail['length']//3} codons)")
+                                st.markdown("**Nucleotide Sequence:**")
+                                st.code(orf_detail['sequence'], language=None)
+                                st.markdown("**Protein Sequence:**")
+                                st.code(orf_detail['protein'], language=None)
                         
-                        results['orfs'] = orfs
+                        results['orfs'] = complete_orfs
                     else:
                         st.info("ℹ️ No ORFs found matching the criteria")
+                    
+                    # Show partial ORFs and statistics
+                    if partial_orfs:
+                        st.caption(f"Detected {len(partial_orfs)} partial ORFs (sequence end fragments)")
+                    if orf_stats:
+                        with st.expander("📊 ORF Statistics"):
+                            st.json(orf_stats)
                 
                 # Motif Search
                 if "🎯 Motif Search" in analyses:
@@ -516,7 +529,7 @@ def main():
                 st.plotly_chart(fig_comp, use_container_width=True)
                 
                 # ORF locations if available
-                if 'orfs' in results:
+                if 'orfs' in results and results['orfs']:
                     st.subheader("ORF Locations")
                     fig_orf = plot_orf_locations(results['orfs'], len(seq_record))
                     st.plotly_chart(fig_orf, use_container_width=True)
@@ -532,23 +545,31 @@ def main():
             with tab3:
                 st.header("💾 Export Results")
                 
-                # CSV Export
-                csv_data = export_results_to_csv(results, seq_record.id)
-                st.download_button(
-                    label="📥 Download Results (CSV)",
-                    data=csv_data,
-                    file_name=f"{seq_record.id}_analysis.csv",
-                    mime="text/csv"
-                )
+                st.markdown("### Download Options")
                 
-                # FASTA Export
-                fasta_data = seq_record.to_fasta()
-                st.download_button(
-                    label="📥 Download Sequence (FASTA)",
-                    data=fasta_data,
-                    file_name=f"{seq_record.id}.fasta",
-                    mime="text/plain"
-                )
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    # CSV Export
+                    csv_data = export_results_to_csv(results, seq_record.id)
+                    st.download_button(
+                        label="📥 Download Results (CSV)",
+                        data=csv_data,
+                        file_name=f"{seq_record.id}_analysis.csv",
+                        mime="text/csv",
+                        use_container_width=True
+                    )
+                
+                with col2:
+                    # FASTA Export
+                    fasta_data = seq_record.to_fasta()
+                    st.download_button(
+                        label="📥 Download Sequence (FASTA)",
+                        data=fasta_data,
+                        file_name=f"{seq_record.id}.fasta",
+                        mime="text/plain",
+                        use_container_width=True
+                    )
                 
                 # Results preview
                 with st.expander("📄 Preview Export Data"):
@@ -594,7 +615,7 @@ def main():
         - **Restriction Sites**: Identify enzyme recognition sequences
         """)
     
-    # Footer
+    # Footer - always visible at bottom of sidebar
     st.sidebar.markdown("---")
     st.sidebar.markdown("""
     **DNA Sequence Analyzer v1.0**  
