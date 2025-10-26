@@ -1,0 +1,61 @@
+{
+  "sample_seq1": {
+    "length": 255,
+    "gc_content": 47.06,
+    "at_content": 52.94,
+    "a_count": 0,
+    "t_count": 135,
+    "g_count": 120,
+    "c_count": 0,
+    "orfs_count": 2,
+    "has_start_codon": false,
+    "has_stop_codon": true,
+    "complement_first_10": "TACCGATCGA",
+    "reverse_complement_first_10": "TTAGCTAGCT"
+  },
+  "sample_seq2": {
+    "length": 330,
+    "gc_content": 44.24,
+    "at_content": 55.76,
+    "a_count": 96,
+    "t_count": 88,
+    "g_count": 65,
+    "c_count": 81,
+    "orfs_count": 1,
+    "has_start_codon": true,
+    "has_stop_codon": false,
+    "first_orf": {
+      "frame": "+1",
+      "start": 0,
+      "length": 330,
+      "protein_start": "MDLSALRVEEVQNVINAMAMQKILECP"
+    },
+    "motif_ATG_count": 4,
+    "gc_content_window_20bp_avg": 44.24
+  },
+  "sample_seq3": {
+    "length": 300,
+    "gc_content": 41.67,
+    "at_content": 58.33,
+    "orfs_count": 1,
+    "has_start_codon": true,
+    "molecular_weight_dna": 98400,
+    "estimated_melting_temp": 86
+  },
+  "sample_seq4": {
+    "length": 48,
+    "gc_content": 47.92,
+    "at_content": 52.08,
+    "orfs_count": 0,
+    "translationlength_codons": 16,
+    "protein_sequence": "AASSSSSSSSSS"
+  },
+  "sample_seq5": {
+    "length": 12,
+    "gc_content": 50.0,
+    "at_content": 50.0,
+    "orfs_count": 1,
+    "has_stop_codon": true,
+    "protein_until_stop": "MA"
+  }
+}

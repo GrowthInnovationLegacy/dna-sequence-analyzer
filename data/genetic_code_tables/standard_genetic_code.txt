@@ -1,0 +1,116 @@
+Standard Genetic Code (NCBI Translation Table 1)
+Universal Genetic Code used by most organisms
+
+===================================================================
+CODON  | AMINO ACID       | 3-LETTER | 1-LETTER | PROPERTIES
+===================================================================
+
+UUU    | Phenylalanine   | Phe      | F        | Hydrophobic, Aromatic
+UUC    | Phenylalanine   | Phe      | F        | Hydrophobic, Aromatic
+UUA    | Leucine         | Leu      | L        | Hydrophobic
+UUG    | Leucine         | Leu      | L        | Hydrophobic
+
+UCU    | Serine          | Ser      | S        | Polar, Hydroxyl
+UCC    | Serine          | Ser      | S        | Polar, Hydroxyl
+UCA    | Serine          | Ser      | S        | Polar, Hydroxyl
+UCG    | Serine          | Ser      | S        | Polar, Hydroxyl
+
+UAU    | Tyrosine        | Tyr      | Y        | Polar, Aromatic
+UAC    | Tyrosine        | Tyr      | Y        | Polar, Aromatic
+UAA    | STOP            | ***      | *        | Termination codon
+UAG    | STOP (Amber)    | ***      | *        | Termination codon
+
+UGU    | Cysteine        | Cys      | C        | Polar, Sulfur-containing
+UGC    | Cysteine        | Cys      | C        | Polar, Sulfur-containing
+UGA    | STOP (Opal)     | ***      | *        | Termination codon
+UGG    | Tryptophan      | Trp      | W        | Hydrophobic, Aromatic
+
+CUU    | Leucine         | Leu      | L        | Hydrophobic
+CUC    | Leucine         | Leu      | L        | Hydrophobic
+CUA    | Leucine         | Leu      | L        | Hydrophobic
+CUG    | Leucine         | Leu      | L        | Hydrophobic
+
+CCU    | Proline         | Pro      | P        | Hydrophobic, Cyclic
+CCC    | Proline         | Pro      | P        | Hydrophobic, Cyclic
+CCA    | Proline         | Pro      | P        | Hydrophobic, Cyclic
+CCG    | Proline         | Pro      | P        | Hydrophobic, Cyclic
+
+CAU    | Histidine       | His      | H        | Charged (+), Aromatic
+CAC    | Histidine       | His      | H        | Charged (+), Aromatic
+CAA    | Glutamine       | Gln      | Q        | Polar, Amide
+CAG    | Glutamine       | Gln      | Q        | Polar, Amide
+
+CGU    | Arginine        | Arg      | R        | Charged (+), Basic
+CGC    | Arginine        | Arg      | R        | Charged (+), Basic
+CGA    | Arginine        | Arg      | R        | Charged (+), Basic
+CGG    | Arginine        | Arg      | R        | Charged (+), Basic
+
+AUU    | Isoleucine      | Ile      | I        | Hydrophobic, Branched
+AUC    | Isoleucine      | Ile      | I        | Hydrophobic, Branched
+AUA    | Isoleucine      | Ile      | I        | Hydrophobic, Branched
+AUG    | Methionine      | Met      | M        | Hydrophobic, START CODON
+
+ACU    | Threonine       | Thr      | T        | Polar, Hydroxyl
+ACC    | Threonine       | Thr      | T        | Polar, Hydroxyl
+ACA    | Threonine       | Thr      | T        | Polar, Hydroxyl
+ACG    | Threonine       | Thr      | T        | Polar, Hydroxyl
+
+AAU    | Asparagine      | Asn      | N        | Polar, Amide
+AAC    | Asparagine      | Asn      | N        | Polar, Amide
+AAA    | Lysine          | Lys      | K        | Charged (+), Basic
+AAG    | Lysine          | Lys      | K        | Charged (+), Basic
+
+AGU    | Serine          | Ser      | S        | Polar, Hydroxyl
+AGC    | Serine          | Ser      | S        | Polar, Hydroxyl
+AGA    | Arginine        | Arg      | R        | Charged (+), Basic
+AGG    | Arginine        | Arg      | R        | Charged (+), Basic
+
+GUU    | Valine          | Val      | V        | Hydrophobic, Branched
+GUC    | Valine          | Val      | V        | Hydrophobic, Branched
+GUA    | Valine          | Val      | V        | Hydrophobic, Branched
+GUG    | Valine          | Val      | V        | Hydrophobic, Branched
+
+GCU    | Alanine         | Ala      | A        | Hydrophobic, Small
+GCC    | Alanine         | Ala      | A        | Hydrophobic, Small
+GCA    | Alanine         | Ala      | A        | Hydrophobic, Small
+GCG    | Alanine         | Ala      | A        | Hydrophobic, Small
+
+GAU    | Aspartic acid   | Asp      | D        | Charged (-), Acidic
+GAC    | Aspartic acid   | Asp      | D        | Charged (-), Acidic
+GAA    | Glutamic acid   | Glu      | E        | Charged (-), Acidic
+GAG    | Glutamic acid   | Glu      | E        | Charged (-), Acidic
+
+GGU    | Glycine         | Gly      | G        | Small, Flexible
+GGC    | Glycine         | Gly      | G        | Small, Flexible
+GGA    | Glycine         | Gly      | G        | Small, Flexible
+GGG    | Glycine         | Gly      | G        | Small, Flexible
+
+===================================================================
+
+SPECIAL CODONS:
+- START CODON: AUG (codes for Methionine)
+- STOP CODONS: UAA (Ochre), UAG (Amber), UGA (Opal)
+
+AMINO ACID CLASSIFICATION:
+- Hydrophobic: A, V, I, L, M, F, W, P
+- Polar: S, T, C, Y, N, Q
+- Charged Positive: K, R, H
+- Charged Negative: D, E
+- Special: G (smallest), P (constrains backbone)
+
+WOBBLE BASE PAIRING:
+Third codon position shows degeneracy:
+- Same amino acid often shares first two positions
+- Allows for mutation tolerance
+- Enables codon optimization for expression
+
+CODON USAGE:
+Different organisms prefer different synonymous codons
+Important for:
+- Heterologous protein expression
+- Synthetic biology design
+- Evolutionary studies
+
+===================================================================
+Reference: NCBI Genetic Codes (https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi)
+Last Updated: 2025
